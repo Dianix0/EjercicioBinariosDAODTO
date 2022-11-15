@@ -16,32 +16,33 @@ import co.edu.unbosque.model.EstudianteDTO;
 
 public class EstudianteFile {
 
-	private String rutaBinario = "./data/estudiantes.dat";
+	private String ruta = "./data/estudiantes.dat";
 	private int numregistros;
 	private File f;
 	private FileOutputStream fos;
 	private DataOutputStream dos;
 	private FileInputStream fis;
 	private DataInputStream dis;
+	private ObjectOutputStream out;
+	private ObjectInputStream ois;
 //	private double numeros[];
 //	private int valores[];
 //	private EstudianteDTO registrosEstudiantes;
 //	private EstudianteDTO[] datos;
 
+	public EstudianteFile() {
+		// TODO Auto-generated constructor stub
+		f = new File(ruta);
+	}
+
 	public String escribirArchivo(ArrayList estudiantes) {
-//		datos = new EstudianteDTO[numregistros];
-		f = new File(rutaBinario);
-		String mensaje = "Archivo Generado Exitosamente!";
+		String mensaje = "Estudiante(s) registrados Exitosamente!";
 		try {
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(rutaBinario));
+			fos = new FileOutputStream(f);
+			out = new ObjectOutputStream(fos);
 			out.writeObject(estudiantes);
 			out.close();
-//			fos = new FileOutputStream(f);
-//			dos = new DataOutputStream(fos);
-//			for (int i = 0; i < numregistros; i++) {
-//				dos.writeInt(i);
-//			}
-//			dos.close();
+			fos.close();
 		} catch (FileNotFoundException e) {
 			mensaje = "No se encontro el archivo";
 		} catch (IOException e) {
@@ -51,19 +52,18 @@ public class EstudianteFile {
 	}
 
 	public void leerArchivo(ArrayList estudiantes) {
-//		f = new File(rutaBinario);
-		ObjectInputStream ois;
 		try {
-			ois = new ObjectInputStream(new FileInputStream(rutaBinario));
-			EstudianteDTO registro = (EstudianteDTO) ois.readObject();
-//			fis = new FileInputStream(f);
-//			dis = new DataInputStream(fis);
+			fis = new FileInputStream(f);
+			ois = new ObjectInputStream(fis);
+			EstudianteDTO estudiante = (EstudianteDTO) ois.readObject();
+			System.out.println(estudiante);
 			for (int i = 0; i < estudiantes.size(); i++) {
 //				System.out.println(datos[i].getCarrera());
 //				System.out.println(datos[i].getNombre());
 //				System.out.println(datos[i].getId());
 			}
 			ois.close();
+			fis.close();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("errorinfinito");
@@ -73,12 +73,12 @@ public class EstudianteFile {
 		}
 	}
 
-	public String getRutaBinario() {
-		return rutaBinario;
+	public String getRuta() {
+		return ruta;
 	}
 
-	public void setRutaBinario(String rutaBinario) {
-		this.rutaBinario = rutaBinario;
+	public void setRuta(String ruta) {
+		this.ruta = ruta;
 	}
 
 	public int getNumregistros() {
@@ -128,48 +128,4 @@ public class EstudianteFile {
 	public void setDis(DataInputStream dis) {
 		this.dis = dis;
 	}
-//
-//	public EstudianteDTO[] getDatos() {
-//		return datos;
-//	}
-//
-//	public void setDatos(EstudianteDTO[] datos) {
-//		this.datos = datos;
-//	}
-
-//	public String escribirRegistro() {
-//		String mensaje = "Registro de Empleado Ingresado!";
-//		EstudianteDTO staff[] = new EstudianteDTO[3];
-////		staff[0] = new EstudianteDTO("Empleado apellido1",23,1000);
-////		staff[1] = new EstudianteDTO("Empleado apellido2",45,4000);
-////		staff[2] = new EstudianteDTO("Empleado apellido3",37,8000);
-//
-//		try {
-//			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(rutaReg));
-//			out.writeObject(staff);
-//			out.close();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//			mensaje = "Error de IO";
-//		}
-//		return mensaje;
-//	}
-
-//	public void leerRegistro() {
-//		ObjectInputStream in;
-//		try {
-//			in = new ObjectInputStream(new FileInputStream(rutaReg));
-//			datos = (EstudianteDTO[]) in.readObject();
-//			in.close();
-//			for (int i = 0; i < datos.length; i++) {
-//				System.out.println(datos[i].getCarrera());
-//				System.out.println(datos[i].getNombre());
-//				System.out.println(datos[i].getId());
-//			}
-//
-//		} catch (IOException | ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
 }
